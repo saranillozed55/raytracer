@@ -83,8 +83,12 @@ class camera {
             if(world.hit(r, interval(0.001, infinity), rec)) {
 
                 //hits sphere since we made the sphere hittable, in main.cpp hittable_list world
-                vec3 direction = random_on_hemisphere(rec.normal);
-                return 0.5 * ray_color(ray(rec.p, direction), depth-1, world);
+
+                //Lambertian spheres 9.4 - More rays scatter toward the normal at the intersection of the sphere with the ray
+                vec3 direction = rec.normal + random_unit_vector();
+
+                // <val> * <stuff> : where val is the percent of reflectance
+                return 0.5 * ray_color(ray(rec.p, direction), depth-1, world); 
             }
             //lerp between two values: blue to white THE SKY
             vec3 unit_direction = unit_vector(r.direction());

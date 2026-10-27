@@ -61,6 +61,14 @@ class vec3 {
         static vec3 random(double min, double max) {
             return vec3(random_double(min, max),random_double(min, max), random_double(min, max));
         }
+
+        //Return true if the vector is close to zero in all dimensions
+        bool near_zero() const {
+            auto s = 1e-8;
+
+            //fabs is returns absolute vlaue of a floating point number
+            return (std::fabs(e[0]) < s) && (std::fabs(e[1]) < s)  && (std::fabs(e[2]) < s);
+        }
 };
 //point 3 is an alias or vec, but useful for geometric clarity in the code
 using point3 = vec3;

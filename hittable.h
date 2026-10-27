@@ -1,10 +1,14 @@
 #ifndef HITTABLE_H
 #define HITTABLE_H
 
+class material;
+
+//hit_record is a way to stuff a bunch of arguments into a class we can pass it around as a group
 class hit_record {
     public:
         point3 p;
         vec3 normal;
+        shared_ptr<material> mat;
         double t;
         bool front_face;
 
@@ -29,9 +33,7 @@ class hittable {
         virtual ~hittable() = default;
 
         //hittable::hit using interval
-        virtual bool hit(const ray& r, interval ray_t, hit_record& rec) const = 0;
-
-        
+        virtual bool hit(const ray& r, interval ray_t, hit_record& rec) const = 0; 
         
 };
 
