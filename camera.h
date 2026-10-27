@@ -8,9 +8,9 @@ class camera {
         //The owning code will modify tghe camera's public variables through simple assignment
         //public camera parameters are here
 
-        double aspect_ratio = 1.0;  // Ratio of image width over height
-        int    image_width  = 100;  // Rendered image width in pixel count
-        int samples_per_pixel = 10; // Count of random samples for each pixel
+        double aspect_ratio = 1.0;  // Ratio of image width over height/default to 1.0
+        int    image_width  = 100;  // Rendered image width in pixel count/default to 100
+        int samples_per_pixel = 10; // Count of random samples for each pixel/default to 10
 
         void render(const hittable& world) {
             initialize();
@@ -21,6 +21,8 @@ class camera {
                 std::clog << "\rScanlines remaining: " << (image_height - j) << ' ' << std::flush;
                 for (int i = 0; i < image_width; i++) {
                     color pixel_color(0,0,0);
+
+                    //multisampling on that pixel, pixel_color holding the sum of all the sample colors 
                     for(int sample = 0; sample < samples_per_pixel; sample++) {
                         ray r = get_ray(i,j);
                         pixel_color += ray_color(r,world);
@@ -33,7 +35,7 @@ class camera {
         }
 
     private: 
-            //private camera variables here
+        //private camera variables here
 
         int    image_height;   // Rendered image height
         double pixel_samples_scale; //color scale factor for a sum of pixel samples
@@ -68,12 +70,15 @@ class camera {
                 center - vec3(0, 0, focal_length) - viewport_u/2 - viewport_v/2;
             pixel00_loc = viewport_upper_left + 0.5 * (pixel_delta_u + pixel_delta_v);
         }
+
         color ray_color(const ray& r, const hittable& world) const {
             hit_record rec;
             if(world.hit(r, interval(0, infinity), rec)) {
+
+                //hits sphere since we made the sphere hittable, in main.cpp hittable_list world
                 return 0.5 * (rec.normal + color(1,1,1));
             }
-            //lerp between two values: blue to white
+            //lerp between two values: blue to white THE SKY
             vec3 unit_direction = unit_vector(r.direction());
             auto a = 0.5*(unit_direction.y() + 1.0);
             return (1.0-a) * color(1.0,1.0,1.0) + a*color(0.5,0.7,1.0);
