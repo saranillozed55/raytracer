@@ -1,13 +1,12 @@
 #ifndef SPHERE_H
 #define SPHERE_H
 #include "hittable.h"
-#include "vec3.h"
 
 class sphere : public hittable {
     public:
         sphere(const point3& center, double radius) : center(center), radius(std::fmax(0,radius)) {}
 
-        bool hit(const ray& r, double ray_tmin, double ray_tmax, hit_record& rec) const override {
+        bool hit(const ray& r, interval ray_t,  hit_record& rec) const override {
             vec3 oc = center - r.origin(); // C-Q, C is the spheres center and Q is the vector pointing from the camera to the spheres center
             // auto a = dot(r.direction(), r.direction());
             // auto b = -2.0 * dot (r.direction(), oc);
@@ -27,10 +26,11 @@ class sphere : public hittable {
             auto sqrtd = std::sqrt(discriminant);
 
             //find the nearest root that lies in the acceptable range
+            //sphere using interval
             auto root = (h-sqrtd) / a;
-            if(root <= ray_tmin || ray_tmax <= root) {
+            if(!ray_t.surrounds(root)) {
                 root = (h+sqrtd) / a;
-                if(root <= ray_tmin || ray_tmax <= root) return false;
+                if(!ray_t.surrounds(root)) return false;
             }
             rec.t = root;
             rec.p = r.at(rec.t);

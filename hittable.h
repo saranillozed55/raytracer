@@ -1,8 +1,6 @@
 #ifndef HITTABLE_H
 #define HITTABLE_H
 
-#include "ray.h"
-
 class hit_record {
     public:
         point3 p;
@@ -22,15 +20,18 @@ class hit_record {
             normal = front_face ? outward_normal : -outward_normal;
             
         }
+
+
 };
 
 class hittable {
     public:
         virtual ~hittable() = default;
-        
-        //hit only "counts" if t_min < t < t_max, which hits we are willing to acept
-        virtual bool hit(const ray& r, double ray_tmin, double ray_tmax, hit_record& rec) const = 0;
 
+        //hittable::hit using interval
+        virtual bool hit(const ray& r, interval ray_t, hit_record& rec) const = 0;
+
+        
         
 };
 
