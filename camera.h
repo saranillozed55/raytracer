@@ -2,6 +2,7 @@
 #define CAMERA_H
 
 #include "hittable.h"
+#include "material.h"
 
 class camera {
     public:
@@ -82,13 +83,22 @@ class camera {
             //9.3, 0.001 to prevent floating point errors
             if(world.hit(r, interval(0.001, infinity), rec)) {
 
+                //each pixel has its own attenuation and scattered
+                ray scattered;
+                color attenuation;
+
+                if(rec.mat->scatter(r, rec, attenuation, scattered)) {
+                    return attenuation * ray_color(scattered, depth -1, world);
+                }
+                
+                return color(0,0,0);
                 //hits sphere since we made the sphere hittable, in main.cpp hittable_list world
 
                 //Lambertian spheres 9.4 - More rays scatter toward the normal at the intersection of the sphere with the ray
-                vec3 direction = rec.normal + random_unit_vector();
-
+                // vec3 direction = rec.normal + random_unit_vector();
+                
                 // <val> * <stuff> : where val is the percent of reflectance
-                return 0.5 * ray_color(ray(rec.p, direction), depth-1, world); 
+                // return 0.5 * ray_color(ray(rec.p, direction), depth-1, world); 
             }
             //lerp between two values: blue to white THE SKY
             vec3 unit_direction = unit_vector(r.direction());
