@@ -7,6 +7,7 @@
 #include <iostream>
 #include <limits>
 #include <memory>
+#include <random>
 
 //C++ std usings
 using std::make_shared;
@@ -24,10 +25,13 @@ inline double degrees_to_radians(double degrees) {
 }
 
 inline double random_double() {
-    //return a random real number between [0,1)
-    //rand() can return at most RAND_MAX, the maximum possible value of the fraction is RAND_MAX / (RAND_MAX + 1.0) which is 
-    //strictly less than 1.0
-    return std::rand() / (RAND_MAX + 1.0);
+    
+    //thread local ensures that each thread gets itws own independent instance
+    thread_local std::uniform_real_distribution<double> distribution(0.0, 1.0);
+    //std::random_device ensures that each thread has a unique, non-deterministic starting state
+    thread_local std::mt19937 generator(std::random_device{}());
+
+    return distribution(generator);
 }
 
 inline double random_double(double min, double max) {

@@ -9,6 +9,14 @@
 #include <thread>
 
 
+/*
+TODO: Look at ThreadCPP. Split the pixel height into multiple threads/ranges, so we give each thread its own range then join to verify
+
+Range from left to right - So pixel height to pixel width. Think of it as going from row[i] then from column[0,1...pixel_width]
+
+*/
+
+
 int main() {
     
     hittable_list world;
