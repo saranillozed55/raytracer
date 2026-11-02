@@ -1,1 +1,1 @@
-# Ray Tracing In One Weekend But A Faster
+# Ray Tracing In One Weekend But Faster
