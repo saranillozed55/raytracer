@@ -18,16 +18,16 @@ cutting render time from **20 minutes to 6 minutes**.
 
 ### Render Settings
 
--Aspect Ratio: 16:9
--Resolution: 1200x675
--Samples Per Pixel: 500
--Max Ray Depth: 50
+-Aspect Ratio: 16:9  
+-Resolution: 1200x675  
+-Samples Per Pixel: 500  
+-Max Ray Depth: 50  
 
 ## Setup Used:
--CPU: 
--GPU: NVIDIA RTX 3060 Ti
--OS: Fedora Linux 44
--Compiler: GCC 16.2.1
+-CPU:  
+-GPU: NVIDIA RTX 3060 Ti  
+-OS: Fedora Linux 44  
+-Compiler: GCC 16.2.1  
 
 ## How It Works
 
