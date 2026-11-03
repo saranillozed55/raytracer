@@ -1,0 +1,7 @@
+a.out
+main
+raytracer
+vec3
+build/
+*.ppm
+    
