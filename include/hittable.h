@@ -1,9 +1,16 @@
 #ifndef HITTABLE_H
 #define HITTABLE_H
 
+// #include "ray.h"
+// #include "vec3.h"
+// #include "point3.h"
+// #include "interval.h"
+// #include <memory>
+
 class material;
 
 //hit_record is a way to stuff a bunch of arguments into a class we can pass it around as a group
+//This class is used to store information about a ray-object intersection
 class hit_record {
     public:
         point3 p;

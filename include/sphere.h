@@ -4,14 +4,21 @@
 
 class sphere : public hittable {
     public:
-        sphere(const point3& center, double radius, shared_ptr<material> mat) : center(center), radius(std::fmax(0,radius)), mat(mat) {
+        
+        // Constructor for a stationary sphere
+        sphere(const point3& static_center, double radius, shared_ptr<material> mat) : center(static_center, vec3(0,0,0)), radius(std::fmax(0,radius)), mat(mat) {
             //TODO: Initialize the material pointer: 'mat'
-
         }
 
+        // Constructor for a moving sphere
+        sphere(const point3& center1, const point3& center2, double radius, shared_ptr<material> mat) 
+            : center(center1, center2 - center1), radius(std::fmax(0,radius)), mat(mat){}
+        
+
         bool hit(const ray& r, interval ray_t,  hit_record& rec) const override {
-            vec3 oc = center - r.origin(); // C-Q, C is the spheres center and Q is the vector pointing from the camera to the spheres center
-            // auto a = dot(r.direction(), r.direction());
+            point3 current_center = center.at(r.time());
+            vec3 oc = current_center - r.origin(); // C-Q, C is the spheres center and Q is the vector pointing from the camera to the spheres center
+            // auto a = d   ot(r.direction(), r.direction());
             // auto b = -2.0 * dot (r.direction(), oc);
             // auto c = dot(oc, oc) - radius*radius;
             // auto discriminant = b*b - 4*a*c;
@@ -44,7 +51,7 @@ class sphere : public hittable {
             //Using Point - Center, we get the unit vector by by dividing it by the radius since the radius is just the distance
             // between the two points ||P-C|| = Radius
             // (P-C) / ||P-C||
-            vec3 outward_normal = (rec.p - center) / radius;
+            vec3 outward_normal = (rec.p - current_center) / radius;
             rec.set_face_normal(r, outward_normal); //set the front_face, hittable.h checks if its outside or inside
             rec.mat = mat;
 
@@ -53,7 +60,7 @@ class sphere : public hittable {
         }
 
     private:
-        point3 center;
+        ray center; // Represents the center of the sphere as a ray, allowing for movement over time
         double radius;
         shared_ptr<material> mat;
 };
